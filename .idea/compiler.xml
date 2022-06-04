@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="oop-project" />
+        <module name="oop-4sem-project" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="oop-project" target="17" />
+      <module name="oop-4sem-project" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>
