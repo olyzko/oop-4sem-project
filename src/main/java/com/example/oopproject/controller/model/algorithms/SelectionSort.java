@@ -1,10 +1,10 @@
 package com.example.oopproject.controller.model.algorithms;
 
 public class SelectionSort {
-    void sort(int[] arr) {
-        for (int i : arr) {
+    static void sort(int[] arr) {
+        for (int i=0; i< arr.length; i++) {
             int minIndex = i;
-            for (int j : arr)
+            for (int j=0; j< arr.length; j++)
                 if (arr[j] < arr[minIndex])
                     minIndex = j;
 

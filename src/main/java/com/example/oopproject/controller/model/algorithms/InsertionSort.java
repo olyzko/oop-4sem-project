@@ -1,8 +1,8 @@
 package com.example.oopproject.controller.model.algorithms;
 
 public class InsertionSort {
-    void sort(int[] arr) {
-        for (int i : arr) {
+    static void sort(int[] arr) {
+        for (int i=0; i< arr.length; i++) {
             int key = arr[i];
             int j = i-1;
 

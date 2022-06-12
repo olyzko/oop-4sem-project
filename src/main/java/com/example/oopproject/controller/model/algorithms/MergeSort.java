@@ -1,8 +1,7 @@
 package com.example.oopproject.controller.model.algorithms;
 
 public class MergeSort {
-
-    void merge(int[] arr, int left, int mid, int right) {
+    static void merge(int[] arr, int left, int mid, int right) {
         int n1 = mid-left+1;
         int n2 = right-mid;
 
@@ -36,7 +35,7 @@ public class MergeSort {
         }
     }
 
-    void sortRecursive(int[] arr, int left, int right) {
+    static void sortRecursive(int[] arr, int left, int right) {
         if (left < right) {
             // Find the middle point
             int mid = (right-left)/2 + left;
@@ -50,7 +49,7 @@ public class MergeSort {
         }
     }
 
-    void sort (int[] arr) {
+   static void sort (int[] arr) {
         int left = 0;
         int right = arr.length - 1;
 
