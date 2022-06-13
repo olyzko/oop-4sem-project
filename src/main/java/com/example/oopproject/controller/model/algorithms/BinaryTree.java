@@ -11,7 +11,16 @@ class Node {
 }
 
 public class BinaryTree {
-    static Node root;
+    public Node root;
+
+    public BinaryTree(int[] arr, int start, int end) {
+        arrayToBST(arr, start, end);
+    }
+
+    public BinaryTree(String str) {
+        int[] arr = arrayFromString(str);
+        root = arrayToBST(arr, 0, arr.length - 1);
+    }
 
     public Node arrayToBST(int[] arr, int start, int end) {
         if (start > end) {
@@ -19,11 +28,13 @@ public class BinaryTree {
         }
 
         InsertionSort.sort(arr);
+        for (int i=0; i<arr.length-1; i++)
+            if (arr[i] == arr[i+1]) {
+                return null;
+            }
         int mid = (start + end) / 2;
         Node node = new Node(arr[mid]);
 
-        /* Recursively construct the left subtree and make it
-         left child of root */
         node.left = arrayToBST(arr, start, mid - 1);
         node.right = arrayToBST(arr, mid + 1, end);
 
