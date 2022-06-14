@@ -1,8 +1,9 @@
 package com.example.oopproject.controller.model.algorithms;
 
-public class InsertionSort {
-    static void sort(int[] arr) {
-        for (int i=0; i< arr.length; i++) {
+public class InsertionSort implements ISorting {
+
+    public static void sort(int[] arr) {
+        for (int i : arr) {
             int key = arr[i];
             int j = i-1;
 
@@ -12,5 +13,9 @@ public class InsertionSort {
             }
             arr[j+1] = key;
         }
+    }
+
+    public void sort(double[] arr) {
+
     }
 }

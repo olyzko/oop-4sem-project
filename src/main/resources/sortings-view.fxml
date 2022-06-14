@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.AnchorPane?>
-
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.oopproject.controller.SortingsController">
    <children>
-      <Button onAction="#onMainButton" layoutX="36.0" layoutY="35.0" mnemonicParsing="false" text="main" />
+      <Button layoutY="1.0" mnemonicParsing="false" onAction="#onMainButton" text="main" />
+      <Slider fx:id="sliderSize" layoutX="405.0" layoutY="14.0" majorTickUnit="15.0" max="50.0" min="5.0" minorTickCount="5" showTickLabels="true" showTickMarks="true" value="25.0" />
+      <ChoiceBox fx:id="choiceBox" layoutX="159.0" layoutY="20.0" prefWidth="150.0" />
+      <Text layoutX="81.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Algorithm" />
+      <Text layoutX="342.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Size" />
+      <AnchorPane fx:id="visualizerPanel" layoutX="40.0" layoutY="100.0" prefHeight="267.0" prefWidth="520.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
+      <Text layoutX="342.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Speed" />
+      <Button layoutY="50.0" mnemonicParsing="false" onAction="#onStartButton" text="Start" />
    </children>
 </AnchorPane>
