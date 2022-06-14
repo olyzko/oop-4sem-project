@@ -43,10 +43,7 @@ public class BinaryTreesController {
             String str = nodesAdd.getText();
             bst = new BinaryTree(str);
             if (bst.root == null) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Alert");
-                alert.setContentText("Wrong input");
-                alert.show();
+                showAlert("Wrong input");
                 nodesAdd.clear();
             }
 
@@ -60,10 +57,7 @@ public class BinaryTreesController {
                 if (!bst.search(number))
                     bst.insert(number);
                 else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Alert");
-                    alert.setContentText("This node is already present");
-                    alert.show();
+                    showAlert("This node is already present");
                     nodesAdd.clear();
                 }
                 bst.preOrder(bst.root);
@@ -89,12 +83,8 @@ public class BinaryTreesController {
             int number = Integer.parseInt(str);
             if (bst.search(number))
                  bst.delete(number);
-            else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Alert");
-                alert.setContentText("This node is not in the tree");
-                alert.show();
-            }
+            else
+                showAlert("This node isn't in the tree");
             displayTree();
             bst.preOrder(bst.root);
             nodesDelete.clear();
@@ -126,5 +116,12 @@ public class BinaryTreesController {
         circle.setFill(color);
         circle.setStroke(Color.BLACK);
         treePane.getChildren().addAll(circle, new Text(x - 4, y + 4, root.data + ""));
+    }
+
+    public void showAlert(String text) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Alert");
+        alert.setContentText(text);
+        alert.show();
     }
 }
