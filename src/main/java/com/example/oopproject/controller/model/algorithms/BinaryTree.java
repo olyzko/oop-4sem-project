@@ -1,15 +1,5 @@
 package com.example.oopproject.controller.model.algorithms;
 
-class Node {
-    int data;
-    Node left, right;
-
-    Node(int d) {
-        data = d;
-        left = right = null;
-    }
-}
-
 public class BinaryTree {
     public Node root;
 
@@ -29,7 +19,7 @@ public class BinaryTree {
 
         InsertionSort.sort(arr);
         for (int i=0; i<arr.length-1; i++)
-            if (arr[i] == arr[i+1]) {
+            if (arr[i] == arr[i+1] || arr[i] < 1 || arr[i] > 1000) {
                 return null;
             }
         int mid = (start + end) / 2;
@@ -39,6 +29,23 @@ public class BinaryTree {
         node.right = arrayToBST(arr, mid + 1, end);
 
         return node;
+    }
+
+    private boolean search(Node root, int e){
+        if(root == null)
+            return false;
+        else if(root.data == e)
+            return true;
+        else{
+            if(root.data < e)
+                return search(root.right, e);
+            else
+                return search(root.left, e);
+        }
+    }
+
+    public boolean search(int e) {
+        return search(root, e);
     }
 
     public void preOrder(Node node) {
@@ -91,7 +98,7 @@ public class BinaryTree {
 
     private Node deleteRec(Node root, int key) {
         if (root == null)
-            return root;
+            return null;
 
         if (key < root.data)
             root.left = deleteRec(root.left, key);

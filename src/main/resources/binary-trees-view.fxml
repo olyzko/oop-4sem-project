@@ -9,8 +9,8 @@
       <Button layoutX="40.0" layoutY="38.0" mnemonicParsing="false" onAction="#onMainButton" text="main" />
       <TextField fx:id="nodesAdd" layoutX="324.0" layoutY="14.0" prefHeight="26.0" prefWidth="196.0" promptText="Enter nodes, separated by coma" />
       <TextField fx:id="nodesDelete" layoutX="324.0" layoutY="40.0" prefHeight="26.0" prefWidth="182.0" visible="false" />
-      <Button fx:id="deleteButton" layoutX="506.0" layoutY="40.0" managed="false" mnemonicParsing="false" prefHeight="26.0" prefWidth="53.0" text="Delete" visible="false" />
+      <Button fx:id="deleteButton" layoutX="506.0" layoutY="40.0" managed="false" mnemonicParsing="false" onAction="#DeleteButtonClicked" prefHeight="26.0" prefWidth="53.0" text="Delete" visible="false" />
       <Button fx:id="addButton" layoutX="520.0" layoutY="14.0" mnemonicParsing="false" onAction="#AddButtonClicked" text="Add" />
-      <AnchorPane fx:id="TreePane" layoutX="40.0" layoutY="87.0" prefHeight="262.0" prefWidth="520.0" />
+      <AnchorPane fx:id="treePane" layoutX="40.0" layoutY="87.0" prefHeight="262.0" prefWidth="520.0" />
    </children>
 </AnchorPane>
