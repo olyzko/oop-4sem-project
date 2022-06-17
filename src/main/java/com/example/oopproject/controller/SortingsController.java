@@ -1,7 +1,7 @@
 package com.example.oopproject.controller;
 
 import com.example.oopproject.controller.model.algorithms.ISorting;
-import com.example.oopproject.controller.model.algorithms.SortingAlgorithmsFactory;
+//import com.example.oopproject.controller.model.algorithms.SortingAlgorithmsFactory;
 import com.example.oopproject.ui.switch_handler.View;
 import com.example.oopproject.ui.switch_handler.ViewSwitcher;
 import javafx.fxml.FXML;
@@ -43,12 +43,12 @@ public class SortingsController implements Initializable {
 
     private ISorting sortingAlgorithm;
 
-    private SortingAlgorithmsFactory factory;
+   // private SortingAlgorithmsFactory factory;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        factory = new SortingAlgorithmsFactory();
+      //  factory = new SortingAlgorithmsFactory();
         configureChoiceBox();
         configureSizeSlider();
         configureVisualizerPanel();
@@ -68,9 +68,9 @@ public class SortingsController implements Initializable {
         );
         choiceBox.setValue("Insertion");
 
-        choiceBox.sceneProperty().addListener((observableValue, scene, t1) -> {
+       /* choiceBox.sceneProperty().addListener((observableValue, scene, t1) -> {
             sortingAlgorithm = factory.getSorting(choiceBox.getValue());
-        });
+        });*/
     }
 
     /**

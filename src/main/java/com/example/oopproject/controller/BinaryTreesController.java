@@ -1,6 +1,6 @@
 package com.example.oopproject.controller;
 
-import com.example.oopproject.controller.model.algorithms.BinaryTree;
+import com.example.oopproject.controller.model.algorithms.BinarySearchTree;
 import com.example.oopproject.controller.model.algorithms.Node;
 import com.example.oopproject.ui.switch_handler.View;
 import com.example.oopproject.ui.switch_handler.ViewSwitcher;
@@ -30,7 +30,7 @@ public class BinaryTreesController {
     public TextField nodesDelete;
     public AnchorPane treePane;
 
-    BinaryTree bst;
+    BinarySearchTree bst;
     private final double radius = 15;
     private final double vGap = 50;
 
@@ -41,7 +41,7 @@ public class BinaryTreesController {
     public void AddButtonClicked() {
         if (!nodesDelete.isVisible()) {
             String str = nodesAdd.getText();
-            bst = new BinaryTree(str);
+            bst = new BinarySearchTree(str);
             if (bst.root == null) {
                 showAlert("Wrong input");
                 nodesAdd.clear();
@@ -54,7 +54,7 @@ public class BinaryTreesController {
             String str = nodesAdd.getText();
             try{
                 int number = Integer.parseInt(str);
-                if (!bst.search(number))
+                if (!bst.search(number) && number > 0 && number < 1000)
                     bst.insert(number);
                 else {
                     showAlert("This node is already present");
