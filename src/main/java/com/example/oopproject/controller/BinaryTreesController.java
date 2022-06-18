@@ -1,5 +1,6 @@
 package com.example.oopproject.controller;
 
+import com.example.oopproject.controller.model.algorithms.AVLTree;
 import com.example.oopproject.controller.model.algorithms.BinarySearchTree;
 import com.example.oopproject.controller.model.algorithms.Node;
 import com.example.oopproject.ui.switch_handler.View;
@@ -29,8 +30,9 @@ public class BinaryTreesController {
     @FXML
     public TextField nodesDelete;
     public AnchorPane treePane;
+    public Button clearButton;
 
-    BinarySearchTree bst;
+    AVLTree bst;
     private final double radius = 15;
     private final double vGap = 50;
 
@@ -41,7 +43,7 @@ public class BinaryTreesController {
     public void AddButtonClicked() {
         if (!nodesDelete.isVisible()) {
             String str = nodesAdd.getText();
-            bst = new BinarySearchTree(str);
+            bst = new AVLTree(str);
             if (bst.root == null) {
                 showAlert("Wrong input");
                 nodesAdd.clear();
@@ -77,7 +79,7 @@ public class BinaryTreesController {
     }
 
 
-    public void DeleteButtonClicked(ActionEvent actionEvent) {
+    public void DeleteButtonClicked() {
         String str = nodesDelete.getText();
         try{
             int number = Integer.parseInt(str);
@@ -92,6 +94,11 @@ public class BinaryTreesController {
         catch (NumberFormatException ex){
             ex.printStackTrace();
         }
+    }
+
+    public void ClearButtonClicked() {
+        bst.root = null;
+        displayTree();
     }
 
     public void displayTree() {

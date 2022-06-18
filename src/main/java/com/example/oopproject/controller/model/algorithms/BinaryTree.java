@@ -50,14 +50,11 @@ abstract class BinaryTree {
         inOrder(root.right);
     }
 
-    protected int minValue(Node root)
-    {
-        int minv = root.data;
-        while (root.left != null) {
-            minv = root.left.data;
-            root = root.left;
-        }
-        return minv;
+    protected Node minValue(Node node) {
+        Node current = node;
+        while (current.left != null)
+            current = current.left;
+        return current;
     }
 
     public static int[] arrayFromString (String str) {

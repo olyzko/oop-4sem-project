@@ -47,7 +47,8 @@ public class BinarySearchTree extends BinaryTree {
                 return root.right;
             else if (root.right == null)
                 return root.left;
-            root.data = minValue(root.right);
+            Node min = minValue(root.right);
+            root.data = min.data;
             root.right = deleteRec(root.right, root.data);
         }
 

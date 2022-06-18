@@ -1,6 +1,6 @@
 package com.example.oopproject.controller.model.algorithms;
 
-import java.util.ArrayList;
+import static java.lang.Math.max;
 
 public class AVLTree extends BinaryTree {
 
@@ -13,15 +13,15 @@ public class AVLTree extends BinaryTree {
         n.height = 1 + Math.max(height(n.left), height(n.right));
     }
 
-    int height(Node n) {
-        return n == null ? -1 : n.height;
+    private int height(Node n) {
+        return n == null ? 0 : n.height;
     }
 
-    int getBalance(Node n) {
-        return (n == null) ? 0 : height(n.right) - height(n.left);
+    private int getBalance(Node n) {
+        return (n == null) ? 0 : height(n.left) - height(n.right);
     }
 
-    Node rotateRight(Node y) {
+    private Node rotateRight(Node y) {
         Node x = y.left;
         Node z = x.right;
         x.right = y;
@@ -31,76 +31,101 @@ public class AVLTree extends BinaryTree {
         return x;
     }
 
-    Node rotateLeft(Node y) {
+    private Node rotateLeft(Node y) {
         Node x = y.right;
         Node z = x.left;
         x.left = y;
         y.right = z;
-        updateHeight(y);
+        updateHeight(x);
         updateHeight(x);
         return x;
-    }
-
-    Node rebalance(Node z) {
-        updateHeight(z);
-        int balance = getBalance(z);
-        if (balance > 1) {
-            if (height(z.right.right) > height(z.right.left)) {
-                z = rotateLeft(z);
-            } else {
-                z.right = rotateRight(z.right);
-                z = rotateLeft(z);
-            }
-        } else if (balance < -1) {
-            if (height(z.left.left) > height(z.left.right))
-                z = rotateRight(z);
-            else {
-                z.left = rotateLeft(z.left);
-                z = rotateRight(z);
-            }
-        }
-        return z;
     }
 
     public void insert (int key) {
         root = insertRec(root, key);
     }
 
-    Node insertRec(Node node, int key) {
-        if (node == null) {
+    private Node insertRec(Node node, int key) {
+        if (node == null)
             return new Node(key);
-        } else if (node.data > key) {
+        if (key < node.data)
             node.left = insertRec(node.left, key);
-        } else if (node.data < key) {
+        else if (key > node.data)
             node.right = insertRec(node.right, key);
-        } else {
-            throw new RuntimeException("duplicate Key!");
+        else
+            return node;
+
+        node.height = 1 + max(height(node.left), height(node.right));
+        int balanceFactor = getBalance(node);
+        if (balanceFactor > 1) {
+            if (key < node.left.data) {
+                return rotateRight(node);
+            } else if (key > node.left.data) {
+                node.left = rotateLeft(node.left);
+                return rotateRight(node);
+            }
         }
-        return rebalance(node);
+        if (balanceFactor < -1) {
+            if (key > node.right.data) {
+                return rotateLeft(node);
+            } else if (key < node.right.data) {
+                node.right = rotateRight(node.right);
+                return rotateLeft(node);
+            }
+        }
+        return node;
     }
 
     public void delete(int key) {
         root = deleteRec(root, key);
     }
 
-    Node deleteRec(Node node, int key) {
-        if (node == null) {
-            return null;
-        } else if (node.data > key) {
-            node.left = deleteRec(node.left, key);
-        } else if (node.data < key) {
-            node.right = deleteRec(node.right, key);
-        } else {
-            if (node.left == null || node.right == null) {
-                node = (node.left == null) ? node.right : node.left;
+    private Node deleteRec(Node root, int key) {
+        if (root == null)
+            return root;
+        if (key < root.data)
+            root.left = deleteRec(root.left, key);
+        else if (key > root.data)
+            root.right = deleteRec(root.right, key);
+        else {
+            if ((root.left == null) || (root.right == null)) {
+                Node temp = null;
+                if (temp == root.left)
+                    temp = root.right;
+                else
+                    temp = root.left;
+                if (temp == null) {
+                    temp = root;
+                    root = null;
+                } else
+                    root = temp;
             } else {
-                int mostLeftChild = minValue(node.right);
-                node.right = deleteRec(node.right, mostLeftChild);
+                Node temp = minValue(root.right);
+                root.data = temp.data;
+                root.right = deleteRec(root.right, temp.data);
             }
         }
-        if (node != null) {
-            node = rebalance(node);
+        if (root == null)
+            return root;
+
+        root.height = max(height(root.left), height(root.right)) + 1;
+        int balanceFactor = getBalance(root);
+        if (balanceFactor > 1) {
+            if (getBalance(root.left) >= 0) {
+                return rotateRight(root);
+            } else {
+                root.left = rotateLeft(root.left);
+                return rotateRight(root);
+            }
         }
-        return node;
+        if (balanceFactor < -1) {
+            if (getBalance(root.right) <= 0) {
+                return rotateLeft(root);
+            } else {
+                root.right = rotateRight(root.right);
+                return rotateLeft(root);
+            }
+        }
+        return root;
     }
 }
