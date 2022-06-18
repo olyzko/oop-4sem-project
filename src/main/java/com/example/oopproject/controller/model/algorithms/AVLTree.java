@@ -36,7 +36,7 @@ public class AVLTree extends BinaryTree {
         Node z = x.left;
         x.left = y;
         y.right = z;
-        updateHeight(x);
+        updateHeight(y);
         updateHeight(x);
         return x;
     }
@@ -82,7 +82,7 @@ public class AVLTree extends BinaryTree {
 
     private Node deleteRec(Node root, int key) {
         if (root == null)
-            return root;
+            return null;
         if (key < root.data)
             root.left = deleteRec(root.left, key);
         else if (key > root.data)
@@ -106,7 +106,7 @@ public class AVLTree extends BinaryTree {
             }
         }
         if (root == null)
-            return root;
+            return null;
 
         root.height = max(height(root.left), height(root.right)) + 1;
         int balanceFactor = getBalance(root);
