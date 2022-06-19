@@ -16,8 +16,8 @@ public class BinaryTree {
         if (start > end) {
             return null;
         }
-
-        InsertionSort.sort(arr);
+        InsertionSort sort = new InsertionSort();
+        sort.sort(arr);
         for (int i=0; i<arr.length-1; i++)
             if (arr[i] == arr[i+1] || arr[i] < 1 || arr[i] > 1000) {
                 return null;

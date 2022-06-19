@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.oopproject.controller.MainController">
    <children>
       <AnchorPane layoutX="86.0" layoutY="35.0" prefHeight="51.0" prefWidth="411.0">
@@ -14,8 +13,9 @@
       </AnchorPane>
       <AnchorPane layoutX="86.0" layoutY="125.0" prefHeight="215.0" prefWidth="177.0">
          <children>
-            <Button onAction="#onSortingsButton" layoutX="53.0" layoutY="28.0" mnemonicParsing="false" text="Sorting Algs" />
-            <Button onAction="#onBinaryTreesButton" layoutX="54.0" layoutY="82.0" mnemonicParsing="false" text="Binary trees" />
+            <Button layoutX="53.0" layoutY="28.0" mnemonicParsing="false" onAction="#onSortingsButton" text="Sorting Algs" />
+            <Button layoutX="54.0" layoutY="82.0" mnemonicParsing="false" onAction="#onBinaryTreesButton" text="Binary trees" />
+            <Button layoutX="63.0" layoutY="139.0" mnemonicParsing="false" text="Test" />
          </children>
       </AnchorPane>
    </children>

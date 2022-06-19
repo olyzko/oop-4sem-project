@@ -14,7 +14,8 @@
       <Text layoutX="81.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Algorithm" />
       <Text layoutX="342.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Size" />
       <AnchorPane fx:id="visualizerPanel" layoutX="40.0" layoutY="100.0" prefHeight="267.0" prefWidth="520.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
-      <Text layoutX="342.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Speed" />
+      <Text layoutX="335.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Speed" />
       <Button layoutY="50.0" mnemonicParsing="false" onAction="#onStartButton" text="Start" />
+      <Slider fx:id="sliderSpeed" blockIncrement="200.0" layoutX="405.0" layoutY="57.0" majorTickUnit="500.0" max="2000.0" showTickLabels="true" showTickMarks="true" />
    </children>
 </AnchorPane>

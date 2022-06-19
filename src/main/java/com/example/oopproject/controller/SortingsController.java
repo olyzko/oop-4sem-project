@@ -1,20 +1,22 @@
 package com.example.oopproject.controller;
 
 import com.example.oopproject.controller.model.algorithms.ISorting;
+import com.example.oopproject.controller.model.algorithms.InsertionSort;
+import com.example.oopproject.controller.model.algorithms.Shuffle;
 import com.example.oopproject.controller.model.algorithms.SortingAlgorithmsFactory;
 import com.example.oopproject.ui.switch_handler.View;
 import com.example.oopproject.ui.switch_handler.ViewSwitcher;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.util.Pair;
 
 import java.net.URL;
-import java.util.List;
-import java.util.Random;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class SortingsController implements Initializable {
 
@@ -30,6 +32,9 @@ public class SortingsController implements Initializable {
     public Slider sliderSize;
 
     @FXML
+    public Slider sliderSpeed;
+
+    @FXML
     public AnchorPane visualizerPanel;
 
     @FXML
@@ -39,20 +44,26 @@ public class SortingsController implements Initializable {
 
     private int size = 25;
 
-    private double[] array;
+    private double delay = 200;
+
+    private int[] array;
 
     private ISorting sortingAlgorithm;
 
     private SortingAlgorithmsFactory factory;
 
+    Timer timer = new Timer();
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        sortingAlgorithm = new InsertionSort();
         factory = new SortingAlgorithmsFactory();
         configureChoiceBox();
         configureSizeSlider();
+        configureDelaySlider();
         configureVisualizerPanel();
-        array = new double[size];
+        array = new int[size];
         generateArray();
     }
 
@@ -67,8 +78,7 @@ public class SortingsController implements Initializable {
                 )
         );
         choiceBox.setValue("Insertion");
-
-        choiceBox.sceneProperty().addListener((observableValue, scene, t1) -> {
+        choiceBox.setOnAction((e) -> {
             sortingAlgorithm = factory.getSorting(choiceBox.getValue());
         });
     }
@@ -90,9 +100,19 @@ public class SortingsController implements Initializable {
     private void configureSizeSlider() {
         sliderSize.valueProperty().addListener((observableValue, number, t1) -> {
             size = (int) sliderSize.getValue();
-            array = new double[size];
+            array = new int[size];
             visualizerPanel.getChildren().clear();
             generateArray();
+        });
+    }
+
+    /**
+     * Applies configuration for size slider.
+     */
+
+    private void configureDelaySlider() {
+        sliderSpeed.valueProperty().addListener((observableValue, number, t1) -> {
+            delay = sliderSpeed.getValue();
         });
     }
 
@@ -101,8 +121,14 @@ public class SortingsController implements Initializable {
      */
 
     private void generateArray() {
+        int baseSize = (int) visualizerPanel.getHeight() / size;
         for (int i = 0; i < size; i++) {
-            visualizerPanel.getChildren().add(generateElement(i));
+            int he = baseSize * (i + 1);
+            array[i] = he;
+        }
+        Shuffle.shuffleArray(array);
+        for (int i = 0; i < size; i++) {
+            visualizerPanel.getChildren().add(generateElement(i, array[i]));
         }
     }
 
@@ -113,13 +139,11 @@ public class SortingsController implements Initializable {
      * @return      created pane
      */
 
-    private Pane generateElement(int index) {
+    private Pane generateElement(int index, int height) {
         AnchorPane pane = new AnchorPane();
         double elementWidth = visualizerPanel.getWidth() / size;
-        double elementHeight = new Random().nextDouble(280.0);
-        array[index] = elementHeight;
 
-        pane.setPrefHeight(elementHeight);
+        pane.setPrefHeight(height);
         pane.setPrefWidth(elementWidth - 0.1 * size);
         pane.setStyle(ELEMENT_STYLE);
         AnchorPane.setLeftAnchor(pane, elementWidth * index);
@@ -128,15 +152,44 @@ public class SortingsController implements Initializable {
         return pane;
     }
 
-    public void swap(double firstHeight, double secondHeight) {
-        Pane firstPane;
-        Pane secondPane;
-        visualizerPanel.getChildren().forEach(
-                e -> {
-                    AnchorPane currentPane = ((AnchorPane) e);
-                    //TODO implement visual swap
+    /**
+     * Performs passed as a parameter task after
+     * specified amount of time in milliseconds
+     *
+     * @param millis        delay in milliseconds
+     * @param continuation  action after the delay
+     */
+    @Deprecated
+    public void delay(long millis, Runnable continuation) {
+        Task<Void> sleeper = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    Thread.sleep(millis);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-        );
+                return null;
+            }
+        };
+        sleeper.setOnSucceeded(event -> continuation.run());
+        new Thread(sleeper).start();
+    }
+
+    /**
+     * Set new height of the pane.
+     *
+     * @param prevHeight  previous height
+     * @param newHeight   new height
+     */
+
+    public void setCurrent(int prevHeight, int newHeight) {
+        visualizerPanel.getChildren().forEach(e -> {
+            AnchorPane pane = ((AnchorPane) e);
+            if (pane.getPrefHeight() == prevHeight) {
+                pane.setPrefHeight(newHeight);
+            }
+        });
     }
 
     /**
@@ -147,7 +200,51 @@ public class SortingsController implements Initializable {
         ViewSwitcher.switchTo(View.MAIN);
     }
 
+    /**
+     * Start the visualization of the chosen sorting
+     * algorithm.
+     */
+
     public void onStartButton() {
+        System.out.println(Arrays.toString(array));
         sortingAlgorithm.sort(array);
+        System.out.println(Arrays.toString(array));
+
+        TimerTask task = new TimerTask() {
+            final Iterator<Pair<Integer, Integer>> entries = sortingAlgorithm.getTrace().iterator();
+            final Pane[] panes = new Pane[2];
+
+            @Override
+            public void run() {
+                if (panes[0] != null) {
+                    panes[0].setStyle(ELEMENT_STYLE);
+                    panes[1].setStyle(ELEMENT_STYLE);
+                }
+                if (!entries.hasNext()) {
+                    timer.cancel();
+                    timer = new Timer();
+                    sortingAlgorithm.getTrace().clear();
+                    return;
+                }
+                Pair<Integer, Integer> currentEntry = entries.next();
+
+                visualizerPanel.getChildren().forEach(e -> {
+                    AnchorPane pane = ((AnchorPane) e);
+                    if (pane.getPrefHeight() == currentEntry.getKey()) {
+                        panes[0] = pane;
+                    }
+                    if (pane.getPrefHeight() == currentEntry.getValue()) {
+                        panes[1] = pane;
+                    }
+                });
+
+                panes[0].setPrefHeight(currentEntry.getValue());
+                panes[1].setPrefHeight(currentEntry.getKey());
+
+                panes[0].setStyle(CURRENT_ELEMENT_STYLE);
+                panes[1].setStyle(CURRENT_ELEMENT_STYLE);
+            }
+        };
+        timer.scheduleAtFixedRate(task, 100L, (long) delay);
     }
 }
