@@ -297,6 +297,4 @@ public class SortingsController implements Initializable {
         };
         timer.scheduleAtFixedRate(task, 100L, (long) delay);
     }
-
-
 }
