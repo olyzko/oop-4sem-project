@@ -8,14 +8,23 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.oopproject.controller.SortingsController">
    <children>
-      <Button layoutY="1.0" mnemonicParsing="false" onAction="#onMainButton" text="main" />
-      <Slider fx:id="sliderSize" layoutX="405.0" layoutY="14.0" majorTickUnit="15.0" max="50.0" min="5.0" minorTickCount="5" showTickLabels="true" showTickMarks="true" value="25.0" />
-      <ChoiceBox fx:id="choiceBox" layoutX="159.0" layoutY="20.0" prefWidth="150.0" />
-      <Text layoutX="81.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Algorithm" />
-      <Text layoutX="342.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Size" />
-      <AnchorPane fx:id="visualizerPanel" layoutX="40.0" layoutY="100.0" prefHeight="267.0" prefWidth="520.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
-      <Text layoutX="335.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Speed" />
-      <Button layoutY="50.0" mnemonicParsing="false" onAction="#onStartButton" text="Start" />
-      <Slider fx:id="sliderSpeed" blockIncrement="200.0" layoutX="405.0" layoutY="57.0" majorTickUnit="500.0" max="2000.0" showTickLabels="true" showTickMarks="true" />
+      <AnchorPane fx:id="visualizerPanel" layoutX="40.0" layoutY="100.0" prefHeight="267.0" prefWidth="520.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="100.0" />
+      <AnchorPane layoutY="-1.0" prefHeight="102.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Button fx:id="btnStart" layoutX="7.0" layoutY="41.0" mnemonicParsing="false" onAction="#onStartButton" text="Start" />
+            <Button layoutX="6.0" layoutY="11.0" mnemonicParsing="false" onAction="#onMainButton" text="main" />
+            <ChoiceBox fx:id="choiceBox" layoutX="225.0" layoutY="12.0" prefWidth="150.0" />
+            <Text layoutX="153.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Algorithm" />
+            <Button fx:id="btnShuffle" layoutX="1.0" layoutY="70.0" mnemonicParsing="false" text="Shuffle" />
+            <AnchorPane layoutX="386.0" prefHeight="98.0" prefWidth="213.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Text layoutX="16.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Speed" />
+                  <Slider fx:id="sliderSize" layoutX="64.0" layoutY="11.0" majorTickUnit="15.0" max="50.0" min="5.0" minorTickCount="5" showTickLabels="true" showTickMarks="true" value="25.0" />
+                  <Text layoutX="16.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Size" />
+                  <Slider fx:id="sliderSpeed" blockIncrement="200.0" layoutX="64.0" layoutY="49.0" majorTickUnit="500.0" max="1500.0" min="50.0" showTickLabels="true" showTickMarks="true" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
