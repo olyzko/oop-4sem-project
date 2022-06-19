@@ -1,9 +1,6 @@
 package com.example.oopproject.controller;
 
-import com.example.oopproject.controller.model.algorithms.ISorting;
-import com.example.oopproject.controller.model.algorithms.InsertionSort;
-import com.example.oopproject.controller.model.algorithms.Shuffle;
-import com.example.oopproject.controller.model.algorithms.SortingAlgorithmsFactory;
+import com.example.oopproject.controller.model.algorithms.*;
 import com.example.oopproject.ui.switch_handler.View;
 import com.example.oopproject.ui.switch_handler.ViewSwitcher;
 import javafx.concurrent.Task;
@@ -210,8 +207,14 @@ public class SortingsController implements Initializable {
         sortingAlgorithm.sort(array);
         System.out.println(Arrays.toString(array));
 
+        if (sortingAlgorithm instanceof MergeSort) {
+            mergeSortVisualization();
+            return;
+        }
+
         TimerTask task = new TimerTask() {
             final Iterator<Pair<Integer, Integer>> entries = sortingAlgorithm.getTrace().iterator();
+
             final Pane[] panes = new Pane[2];
 
             @Override
@@ -247,4 +250,40 @@ public class SortingsController implements Initializable {
         };
         timer.scheduleAtFixedRate(task, 100L, (long) delay);
     }
+
+    public void mergeSortVisualization() {
+        TimerTask task = new TimerTask() {
+            final Iterator<Pair<Integer, Integer>> entries = sortingAlgorithm.getTrace().iterator();
+
+            Pane paneCurr;
+
+            @Override
+            public void run() {
+                if (paneCurr != null) {
+                    paneCurr.setStyle(ELEMENT_STYLE);
+                }
+                if (!entries.hasNext()) {
+                    timer.cancel();
+                    timer = new Timer();
+                    sortingAlgorithm.getTrace().clear();
+                    return;
+                }
+                Pair<Integer, Integer> currentEntry = entries.next();
+
+                visualizerPanel.getChildren().forEach(e -> {
+                    AnchorPane pane = ((AnchorPane) e);
+                    if (pane.getPrefHeight() == currentEntry.getKey()) {
+                        paneCurr = pane;
+                    }
+                });
+
+                paneCurr.setPrefHeight(currentEntry.getValue());
+
+                paneCurr.setStyle(CURRENT_ELEMENT_STYLE);
+            }
+        };
+        timer.scheduleAtFixedRate(task, 100L, (long) delay);
+    }
+
+
 }

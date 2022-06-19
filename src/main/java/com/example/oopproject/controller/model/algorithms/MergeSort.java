@@ -15,10 +15,12 @@ public class MergeSort extends SwapTrace implements ISorting {
         int i = 0, j = 0, k = left;
         while (i < n1 && j < n2) {
             if (leftArray[i] <= rightArray[j]) {
+                addStep(arr[k], leftArray[i]);
                 arr[k] = leftArray[i];
                 i++;
             }
             else {
+                addStep(arr[k], rightArray[j]);
                 arr[k] = rightArray[j];
                 j++;
             }
@@ -26,11 +28,13 @@ public class MergeSort extends SwapTrace implements ISorting {
         }
 
         while (i < n1) {
+            addStep(arr[k], leftArray[i]);
             arr[k] = leftArray[i];
             i++; k++;
         }
 
         while (j < n2) {
+            addStep(arr[k], rightArray[j]);
             arr[k] = rightArray[j];
             j++; k++;
         }
