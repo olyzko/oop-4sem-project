@@ -1,60 +1,129 @@
 package com.example.oopproject.controller.model.algorithms;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-abstract class BinaryTree {
+public class BinaryTree {
     public Node root;
 
-    private boolean search(Node root, int key){
+    public BinaryTree(int[] arr, int start, int end) {
+        arrayToBST(arr, start, end);
+    }
+
+    public BinaryTree(String str) {
+        int[] arr = arrayFromString(str);
+        root = arrayToBST(arr, 0, arr.length - 1);
+    }
+
+    public Node arrayToBST(int[] arr, int start, int end) {
+        if (start > end) {
+            return null;
+        }
+        InsertionSort sort = new InsertionSort();
+        sort.sort(arr);
+        for (int i=0; i<arr.length-1; i++)
+            if (arr[i] == arr[i+1] || arr[i] < 1 || arr[i] > 1000) {
+                return null;
+            }
+        int mid = (start + end) / 2;
+        Node node = new Node(arr[mid]);
+
+        node.left = arrayToBST(arr, start, mid - 1);
+        node.right = arrayToBST(arr, mid + 1, end);
+
+        return node;
+    }
+
+    private boolean search(Node root, int e){
         if(root == null)
             return false;
-        else if(root.data == key)
+        else if(root.data == e)
             return true;
         else{
-            if(root.data < key)
-                return search(root.right, key);
+            if(root.data < e)
+                return search(root.right, e);
             else
-                return search(root.left, key);
+                return search(root.left, e);
         }
     }
 
-    public boolean search(int key) {
-        return search(root, key);
+    public boolean search(int e) {
+        return search(root, e);
     }
 
-    public void preOrder(Node root) {
-        if (root == null) {
+    public void preOrder(Node node) {
+        if (node == null) {
             return;
         }
-        System.out.print(root.data + " ");
-        preOrder(root.left);
-        preOrder(root.right);
+        System.out.print(node.data + " ");
+        preOrder(node.left);
+        preOrder(node.right);
     }
 
-    public void postOrder(Node root) {
-        if (root == null) {
+    public void postOrder(Node node) {
+        if (node == null) {
             return;
         }
-        postOrder(root.left);
-        postOrder(root.right);
-        System.out.print(root.data + " ");
+        preOrder(node.left);
+        preOrder(node.right);
+        System.out.print(node.data + " ");
     }
 
-    public void inOrder(Node root) {
-        if (root == null) {
+    public void inOrder(Node node) {
+        if (node == null) {
             return;
         }
-        inOrder(root.left);
-        System.out.print(root.data + " ");
-        inOrder(root.right);
+        preOrder(node.left);
+        System.out.print(node.data + " ");
+        preOrder(node.right);
     }
 
-    protected Node minValue(Node node) {
-        Node current = node;
-        while (current.left != null)
-            current = current.left;
-        return current;
+    public void insert(int key) {
+        root = insertRec(root, key);
+    }
+
+    private Node insertRec(Node root, int key)  {
+        if (root == null) {
+            root = new Node(key);
+            return root;
+        }
+
+        if (key < root.data)
+            root.left = insertRec(root.left, key);
+        else if (key > root.data)
+            root.right = insertRec(root.right, key);
+        return root;
+    }
+
+    public void delete(int key) {
+        root = deleteRec(root, key);
+    }
+
+    private Node deleteRec(Node root, int key) {
+        if (root == null)
+            return null;
+
+        if (key < root.data)
+            root.left = deleteRec(root.left, key);
+        else if (key > root.data)
+            root.right = deleteRec(root.right, key);
+        else {
+            if (root.left == null)
+                return root.right;
+            else if (root.right == null)
+                return root.left;
+            root.data = minValue(root.right);
+            root.right = deleteRec(root.right, root.data);
+        }
+
+        return root;
+    }
+
+    private int minValue(Node root)
+    {
+        int minv = root.data;
+        while (root.left != null) {
+            minv = root.left.data;
+            root = root.left;
+        }
+        return minv;
     }
 
     public static int[] arrayFromString (String str) {
@@ -73,40 +142,4 @@ abstract class BinaryTree {
         }
         return arr;
     }
-
-    public static Node arrayToBST(int[] arr, int start, int end) {
-        if (start > end) {
-            return null;
-        }
-
-        Arrays.sort(arr);
-        for (int i=0; i<arr.length-1; i++)
-            if (arr[i] == arr[i+1] || arr[i] < 1 || arr[i] > 1000) {
-                return null;
-            }
-        int mid = (start + end) / 2;
-        Node node = new Node(arr[mid]);
-
-        node.left = arrayToBST(arr, start, mid - 1);
-        node.right = arrayToBST(arr, mid + 1, end);
-
-        return node;
-    }
-
-    public ArrayList<Node> path(int key){
-        ArrayList<Node> list = new ArrayList<>();
-        Node current = root;
-        while(current != null){
-            list.add(current);
-            if(key < current.data)
-                current = current.left;
-            else if(key > current.data)
-                current = current.right;
-            else
-                break;
-        }
-        return list;
-    }
-
-    protected abstract void insert(int key);
 }
