@@ -3,8 +3,12 @@ package com.example.oopproject.controller.model.algorithms;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-abstract class BinaryTree {
+public abstract class BinaryTree {
     public Node root;
+
+    public BinaryTree(String str) {}
+
+    public BinaryTree() {}
 
     private boolean search(Node root, int key){
         if(root == null)
@@ -108,5 +112,7 @@ abstract class BinaryTree {
         return list;
     }
 
-    protected abstract void insert(int key);
+    public abstract void insert(int key);
+
+    public abstract void delete(int key);
 }

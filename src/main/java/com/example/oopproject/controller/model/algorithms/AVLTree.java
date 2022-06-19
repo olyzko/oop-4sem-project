@@ -9,6 +9,8 @@ public class AVLTree extends BinaryTree {
         root = arrayToBST(arr, 0, arr.length - 1);
     }
 
+    public AVLTree() {}
+
     void updateHeight(Node n) {
         n.height = 1 + Math.max(height(n.left), height(n.right));
     }

@@ -9,6 +9,8 @@ public class BinarySearchTree extends BinaryTree {
         root = arrayToBST(arr, 0, arr.length - 1);
     }
 
+    public BinarySearchTree() {}
+
     public void insert(int key) {
         root = insertRec(root, key);
     }
