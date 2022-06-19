@@ -14,7 +14,9 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 
+import java.lang.reflect.Array;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -62,20 +64,39 @@ public class BinaryTreesController implements Initializable {
                 nodesAdd.clear();
             }
 
-            tree.preOrder(tree.root);
+           // tree.preOrder(tree.root);
             nodesAdd.setPromptText("Enter the new node (1-1000)");
+            displayTree(0);
         }
         else {
             String str = nodesAdd.getText();
             try{
                 int number = Integer.parseInt(str);
-                if (!tree.search(number) && number > 0 && number < 1000)
+                if (!tree.search(number) && number > 0 && number < 1000) {
+                    ArrayList<Integer> list = tree.path(number);
+                    for (Integer integer : list) {
+                        try {
+                            displayTree(integer);
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     tree.insert(number);
+
+                    try {
+                        displayTree(5);
+                        Thread.sleep(3000);
+                        displayTree(number);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                 else {
                     showAlert("This node is already present");
                     nodesAdd.clear();
                 }
-                tree.preOrder(tree.root);
+               // tree.preOrder(tree.root);
 
             }
             catch (NumberFormatException ex){
@@ -88,7 +109,6 @@ public class BinaryTreesController implements Initializable {
         deleteButton.setVisible(true);
         deleteButton.setManaged(true);
         nodesAdd.clear();
-        displayTree();
     }
 
 
@@ -100,7 +120,7 @@ public class BinaryTreesController implements Initializable {
                  tree.delete(number);
             else
                 showAlert("This node isn't in the tree");
-            displayTree();
+            displayTree(0);
             tree.preOrder(tree.root);
             nodesDelete.clear();
         }
@@ -116,7 +136,7 @@ public class BinaryTreesController implements Initializable {
         deleteButton.setVisible(false);
         deleteButton.setManaged(false);
         nodesAdd.clear();
-        displayTree();
+        displayTree(0);
     }
 
     private void configureChoiceBox() {
@@ -128,28 +148,36 @@ public class BinaryTreesController implements Initializable {
         choiceBox.setValue("Binary search tree");
     }
 
-    public void displayTree() {
+    public void displayTree(int key) {
         treePane.getChildren().clear();
         if(tree.root != null){
-            displayTree(tree.root, treePane.getWidth() / 2, this.vGap, treePane.getWidth() / 4, Color.MEDIUMPURPLE);
+            displayTree(tree.root, treePane.getWidth() / 2, this.vGap, treePane.getWidth() / 4, key);
+            System.out.print("\n\n");
         }
     }
 
-    protected void displayTree(Node root, double x, double y, double hGap, Color color){
+    protected void displayTree(Node root, double x, double y, double hGap, int key){
         if(root.left != null){
             treePane.getChildren().add(new Line(x - hGap, y + vGap, x, y));
-            displayTree(root.left, x - hGap, y + vGap, hGap / 2,color);
+            displayTree(root.left, x - hGap, y + vGap, hGap / 2, key);
         }
 
         if (root.right != null){
             treePane.getChildren().add(new Line(x + hGap, y + vGap, x, y));
-            displayTree(root.right, x + hGap, y + vGap, hGap / 2, color);
+            displayTree(root.right, x + hGap, y + vGap, hGap / 2, key);
         }
 
         Circle circle = new Circle(x, y, radius);
-        circle.setFill(color);
+        System.out.print(root.data +"/"+ key + " ");
+        if (root.data == key) {
+            circle.setFill(Color.ORANGE);
+            System.out.print("vjitbb ");
+        }
+        else
+            circle.setFill(Color.MEDIUMPURPLE);
         circle.setStroke(Color.BLACK);
         treePane.getChildren().addAll(circle, new Text(x - 4, y + 4, root.data + ""));
+        System.out.println(circle.getFill());
     }
 
     public void showAlert(String text) {

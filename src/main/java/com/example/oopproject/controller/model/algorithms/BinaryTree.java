@@ -6,8 +6,6 @@ import java.util.Arrays;
 public abstract class BinaryTree {
     public Node root;
 
-    public BinaryTree(String str) {}
-
     public BinaryTree() {}
 
     private boolean search(Node root, int key){
@@ -97,11 +95,11 @@ public abstract class BinaryTree {
         return node;
     }
 
-    public ArrayList<Node> path(int key){
-        ArrayList<Node> list = new ArrayList<>();
+    public ArrayList<Integer> path(int key){
+        ArrayList<Integer> list = new ArrayList<>();
         Node current = root;
         while(current != null){
-            list.add(current);
+            list.add(current.data);
             if(key < current.data)
                 current = current.left;
             else if(key > current.data)

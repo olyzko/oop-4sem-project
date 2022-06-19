@@ -1,7 +1,5 @@
 package com.example.oopproject.controller.model.algorithms;
 
-import java.util.Arrays;
-
 public class BinarySearchTree extends BinaryTree {
 
     public BinarySearchTree(String str) {
