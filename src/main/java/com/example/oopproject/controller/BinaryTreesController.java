@@ -2,6 +2,10 @@ package com.example.oopproject.controller;
 
 import com.example.oopproject.controller.model.algorithms.*;
 import com.example.oopproject.ui.switch_handler.*;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -13,12 +17,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.lang.reflect.Array;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class BinaryTreesController implements Initializable {
 
@@ -74,23 +77,21 @@ public class BinaryTreesController implements Initializable {
                 int number = Integer.parseInt(str);
                 if (!tree.search(number) && number > 0 && number < 1000) {
                     ArrayList<Integer> list = tree.path(number);
-                    for (Integer integer : list) {
-                        try {
-                            displayTree(integer);
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    tree.insert(number);
+                    final Integer[] integer = {0};
+                    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
 
-                    try {
-                        displayTree(5);
-                        Thread.sleep(3000);
-                        displayTree(number);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                        if (integer[0] == list.size()) {
+                            tree.insert(number);
+                            displayTree(number);
+                            return;
+                        }
+                        displayTree(list.get(integer[0]));
+                        System.out.print(integer[0] + "/" + list.get(integer[0]) + " " + list.size() + "\n");
+                        integer[0]++;
+                    }));
+                    timeline.setCycleCount(list.size()+1);
+                    timeline.play();
+
                 }
                 else {
                     showAlert("This node is already present");
@@ -116,8 +117,24 @@ public class BinaryTreesController implements Initializable {
         String str = nodesDelete.getText();
         try{
             int number = Integer.parseInt(str);
-            if (tree.search(number))
-                 tree.delete(number);
+            if (tree.search(number)) {
+
+                ArrayList<Integer> list = tree.path(number);
+                final Integer[] integer = {0};
+                Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+
+                    if (integer[0] == list.size()) {
+                        tree.delete(number);
+                        displayTree(number);
+                        return;
+                    }
+                    displayTree(list.get(integer[0]));
+                    System.out.print(integer[0] + "/" + list.get(integer[0]) + " " + list.size() + "\n");
+                    integer[0]++;
+                }));
+                timeline.setCycleCount(list.size()+1);
+                timeline.play();
+            }
             else
                 showAlert("This node isn't in the tree");
             displayTree(0);
@@ -152,7 +169,6 @@ public class BinaryTreesController implements Initializable {
         treePane.getChildren().clear();
         if(tree.root != null){
             displayTree(tree.root, treePane.getWidth() / 2, this.vGap, treePane.getWidth() / 4, key);
-            System.out.print("\n\n");
         }
     }
 
@@ -168,16 +184,13 @@ public class BinaryTreesController implements Initializable {
         }
 
         Circle circle = new Circle(x, y, radius);
-        System.out.print(root.data +"/"+ key + " ");
         if (root.data == key) {
             circle.setFill(Color.ORANGE);
-            System.out.print("vjitbb ");
         }
         else
             circle.setFill(Color.MEDIUMPURPLE);
         circle.setStroke(Color.BLACK);
         treePane.getChildren().addAll(circle, new Text(x - 4, y + 4, root.data + ""));
-        System.out.println(circle.getFill());
     }
 
     public void showAlert(String text) {
