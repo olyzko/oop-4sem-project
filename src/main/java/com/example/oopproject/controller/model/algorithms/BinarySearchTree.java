@@ -4,7 +4,10 @@ public class BinarySearchTree extends BinaryTree {
 
     public BinarySearchTree(String str) {
         int[] arr = arrayFromString(str);
-        root = arrayToBST(arr, 0, arr.length - 1);
+        if (arr[0] == 0)
+            root = null;
+        else
+            root = arrayToBST(arr, 0, arr.length - 1);
     }
 
     public BinarySearchTree() {}

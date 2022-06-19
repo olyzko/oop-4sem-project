@@ -2,10 +2,8 @@ package com.example.oopproject.controller;
 
 import com.example.oopproject.controller.model.algorithms.*;
 import com.example.oopproject.ui.switch_handler.*;
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -19,7 +17,6 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.*;
 
@@ -36,8 +33,14 @@ public class BinaryTreesController implements Initializable {
 
     @FXML
     public TextField nodesDelete;
+
+    @FXML
     public AnchorPane treePane;
+
+    @FXML
     public Button clearButton;
+
+    @FXML
     public ChoiceBox choiceBox;
 
     private BinaryTreeFactory factory;
@@ -76,21 +79,27 @@ public class BinaryTreesController implements Initializable {
             try{
                 int number = Integer.parseInt(str);
                 if (!tree.search(number) && number > 0 && number < 1000) {
-                    ArrayList<Integer> list = tree.path(number);
-                    final Integer[] integer = {0};
-                    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+                    if (choiceBox.getValue() == "AVL tree") {
+                        tree.insert(number);
+                        displayTree(0);
+                    }
+                    else {
+                        ArrayList<Integer> list = tree.path(number);
+                        final Integer[] integer = {0};
+                        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
 
-                        if (integer[0] == list.size()) {
-                            tree.insert(number);
-                            displayTree(number);
-                            return;
-                        }
-                        displayTree(list.get(integer[0]));
-                        System.out.print(integer[0] + "/" + list.get(integer[0]) + " " + list.size() + "\n");
-                        integer[0]++;
-                    }));
-                    timeline.setCycleCount(list.size()+1);
-                    timeline.play();
+                            if (integer[0] == list.size()) {
+                                tree.insert(number);
+                                displayTree(number);
+                                return;
+                            }
+                            displayTree(list.get(integer[0]));
+                            System.out.print(integer[0] + "/" + list.get(integer[0]) + " " + list.size() + "\n");
+                            integer[0]++;
+                        }));
+                        timeline.setCycleCount(list.size() + 1);
+                        timeline.play();
+                    }
 
                 }
                 else {
@@ -101,6 +110,7 @@ public class BinaryTreesController implements Initializable {
 
             }
             catch (NumberFormatException ex){
+                showAlert("Wrong input");
                 ex.printStackTrace();
             }
         }
@@ -118,26 +128,30 @@ public class BinaryTreesController implements Initializable {
         try{
             int number = Integer.parseInt(str);
             if (tree.search(number)) {
+                if (choiceBox.getValue() == "AVL tree") {
+                    tree.delete(number);
+                    displayTree(0);
+                }
+                else {
+                    ArrayList<Integer> list = tree.path(number);
+                    final Integer[] integer = {0};
+                    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
 
-                ArrayList<Integer> list = tree.path(number);
-                final Integer[] integer = {0};
-                Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
-
-                    if (integer[0] == list.size()) {
-                        tree.delete(number);
-                        displayTree(number);
-                        return;
-                    }
-                    displayTree(list.get(integer[0]));
-                    System.out.print(integer[0] + "/" + list.get(integer[0]) + " " + list.size() + "\n");
-                    integer[0]++;
-                }));
-                timeline.setCycleCount(list.size()+1);
-                timeline.play();
+                        if (integer[0] == list.size()) {
+                            tree.delete(number);
+                            displayTree(number);
+                            return;
+                        }
+                        displayTree(list.get(integer[0]));
+                        System.out.print(integer[0] + "/" + list.get(integer[0]) + " " + list.size() + "\n");
+                        integer[0]++;
+                    }));
+                    timeline.setCycleCount(list.size() + 1);
+                    timeline.play();
+                }
             }
             else
                 showAlert("This node isn't in the tree");
-            displayTree(0);
             tree.preOrder(tree.root);
             nodesDelete.clear();
         }
