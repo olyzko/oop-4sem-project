@@ -53,7 +53,7 @@ public class SortingsController implements Initializable {
 
     private SortingAlgorithmsFactory factory;
 
-    Timer timer = new Timer();
+    private Timer timer = new Timer();
 
 
     @Override
@@ -212,6 +212,8 @@ public class SortingsController implements Initializable {
 
     public void onStartButton() {
         btnStart.setDisable(true);
+        sliderSpeed.setDisable(true);
+        sliderSize.setDisable(true);
         sortingAlgorithm.sort(array);
 
         if (sortingAlgorithm instanceof MergeSort) {
@@ -234,6 +236,8 @@ public class SortingsController implements Initializable {
                     timer.cancel();
                     timer = new Timer();
                     sortingAlgorithm.getTrace().clear();
+                    sliderSize.setDisable(false);
+                    sliderSpeed.setDisable(false);
                     return;
                 }
                 Pair<Integer, Integer> currentEntry = entries.next();
