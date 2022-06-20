@@ -4,6 +4,7 @@ import com.example.oopproject.controller.model.algorithms.*;
 import com.example.oopproject.ui.switch_handler.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -43,6 +44,9 @@ public class BinaryTreesController implements Initializable {
     @FXML
     public ChoiceBox choiceBox;
 
+    @FXML
+    public Button InorderButton;
+
     private BinaryTreeFactory factory;
     private BinaryTree tree;
 
@@ -76,7 +80,7 @@ public class BinaryTreesController implements Initializable {
         }
         else {
             String str = nodesAdd.getText();
-            try{
+            try {
                 int number = Integer.parseInt(str);
                 if (!tree.search(number) && number > 0 && number < 1000) {
                     if (choiceBox.getValue() == "AVL tree") {
@@ -100,7 +104,6 @@ public class BinaryTreesController implements Initializable {
                         timeline.setCycleCount(list.size() + 1);
                         timeline.play();
                     }
-
                 }
                 else {
                     showAlert("This node is already present");
@@ -152,10 +155,10 @@ public class BinaryTreesController implements Initializable {
             }
             else
                 showAlert("This node isn't in the tree");
-            tree.preOrder(tree.root);
             nodesDelete.clear();
         }
         catch (NumberFormatException ex){
+            showAlert("Wrong input");
             ex.printStackTrace();
         }
     }
@@ -204,7 +207,8 @@ public class BinaryTreesController implements Initializable {
         else
             circle.setFill(Color.MEDIUMPURPLE);
         circle.setStroke(Color.BLACK);
-        treePane.getChildren().addAll(circle, new Text(x - 4, y + 4, root.data + ""));
+        double xFixed = fix(root.data, x);
+        treePane.getChildren().addAll(circle, new Text(xFixed, y + 4, root.data + ""));
     }
 
     public void showAlert(String text) {
@@ -212,5 +216,36 @@ public class BinaryTreesController implements Initializable {
         alert.setTitle("Alert");
         alert.setContentText(text);
         alert.show();
+    }
+
+    private double fix(int key, double x) {
+        if (key >= 100)
+            return x-8;
+        else if (key >= 10)
+            return x-6;
+        else
+            return x-4;
+    }
+
+    public void InorderButtonClicked() {
+        ArrayList<Integer> list = tree.inOrder(tree.root);
+        final Integer[] integer = {0};
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+            displayTree(list.get(integer[0]));
+            integer[0]++;
+        }));
+        timeline.setCycleCount(list.size());
+        timeline.play();
+    }
+
+    public void PostorderButtonClicked() {
+        ArrayList<Integer> list = tree.postOrder(tree.root);
+        final Integer[] integer = {0};
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+            displayTree(list.get(integer[0]));
+            integer[0]++;
+        }));
+        timeline.setCycleCount(list.size());
+        timeline.play();
     }
 }

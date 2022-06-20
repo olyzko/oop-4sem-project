@@ -2,6 +2,8 @@ package com.example.oopproject.controller.model.algorithms;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Stack;
 
 public abstract class BinaryTree {
     public Node root;
@@ -25,31 +27,40 @@ public abstract class BinaryTree {
         return search(root, key);
     }
 
-    public void preOrder(Node root) {
-        if (root == null) {
-            return;
+    public ArrayList<Integer> inOrder(Node root) {
+        ArrayList<Integer> list = new ArrayList<>();
+        Stack<Node> stack = new Stack<Node>();
+        while(!stack.isEmpty() || root!=null) {
+            if(root!=null) {
+                stack.push(root);
+                root=root.left;
+            }
+            else {
+                root = (Node) stack.pop();
+                list.add(root.data);
+                root = root.right;
+            }
         }
-        System.out.print(root.data + " ");
-        preOrder(root.left);
-        preOrder(root.right);
+        return list;
     }
 
-    public void postOrder(Node root) {
-        if (root == null) {
-            return;
+    public ArrayList<Integer> postOrder(Node root) {
+        ArrayList<Integer> list = new ArrayList<>();
+        Node temp = root;
+        HashSet<Node> visited = new HashSet<>();
+        while ((temp != null  && !visited.contains(temp))) {
+            if (temp.left != null && !visited.contains(temp.left))
+                temp = temp.left;
+            else if (temp.right != null && !visited.contains(temp.right))
+                temp = temp.right;
+            else {
+                list.add(temp.data);
+                visited.add(temp);
+                temp = root;
+            }
         }
-        postOrder(root.left);
-        postOrder(root.right);
-        System.out.print(root.data + " ");
-    }
 
-    public void inOrder(Node root) {
-        if (root == null) {
-            return;
-        }
-        inOrder(root.left);
-        System.out.print(root.data + " ");
-        inOrder(root.right);
+        return list;
     }
 
     protected Node minValue(Node node) {

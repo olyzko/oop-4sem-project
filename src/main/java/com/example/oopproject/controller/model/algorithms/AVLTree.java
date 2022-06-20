@@ -6,7 +6,10 @@ public class AVLTree extends BinaryTree {
 
     public AVLTree(String str) {
         int[] arr = arrayFromString(str);
-        root = arrayToBST(arr, 0, arr.length - 1);
+        if (arr[0] == 0)
+            root = null;
+        else
+            root = arrayToBST(arr, 0, arr.length - 1);
     }
 
     public AVLTree() {}
