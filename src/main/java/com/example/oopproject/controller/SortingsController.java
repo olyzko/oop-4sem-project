@@ -6,6 +6,7 @@ import com.example.oopproject.ui.switch_handler.ViewSwitcher;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.AnchorPane;
@@ -37,6 +38,12 @@ public class SortingsController implements Initializable {
     @FXML
     public ChoiceBox<String> choiceBox;
 
+    @FXML
+    public Button btnStart;
+
+    @FXML
+    public Button btnShuffle;
+
     // Algorithm utilities----------------------------------------------------------------------------------------------
 
     private int size = 25;
@@ -62,6 +69,7 @@ public class SortingsController implements Initializable {
         configureVisualizerPanel();
         array = new int[size];
         generateArray();
+        sortingAlgorithm.getTrace().clear();
     }
 
     /**
@@ -97,6 +105,8 @@ public class SortingsController implements Initializable {
     private void configureSizeSlider() {
         sliderSize.valueProperty().addListener((observableValue, number, t1) -> {
             size = (int) sliderSize.getValue();
+            btnStart.setDisable(false);
+            btnShuffle.setDisable(false);
             array = new int[size];
             visualizerPanel.getChildren().clear();
             generateArray();
@@ -194,6 +204,8 @@ public class SortingsController implements Initializable {
      */
 
     public void onMainButton() {
+        timer.cancel();
+        sortingAlgorithm.getTrace().clear();
         ViewSwitcher.switchTo(View.MAIN);
     }
 
@@ -203,9 +215,9 @@ public class SortingsController implements Initializable {
      */
 
     public void onStartButton() {
-        System.out.println(Arrays.toString(array));
+        btnStart.setDisable(true);
+        btnShuffle.setDisable(true);
         sortingAlgorithm.sort(array);
-        System.out.println(Arrays.toString(array));
 
         if (sortingAlgorithm instanceof MergeSort) {
             mergeSortVisualization();
@@ -227,6 +239,7 @@ public class SortingsController implements Initializable {
                     timer.cancel();
                     timer = new Timer();
                     sortingAlgorithm.getTrace().clear();
+                    btnShuffle.setDisable(false);
                     return;
                 }
                 Pair<Integer, Integer> currentEntry = entries.next();
@@ -284,6 +297,4 @@ public class SortingsController implements Initializable {
         };
         timer.scheduleAtFixedRate(task, 100L, (long) delay);
     }
-
-
 }
