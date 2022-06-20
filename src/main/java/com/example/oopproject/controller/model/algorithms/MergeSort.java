@@ -2,7 +2,7 @@ package com.example.oopproject.controller.model.algorithms;
 
 public class MergeSort extends SwapTrace implements ISorting {
 
-    void merge(int[] arr, int left, int mid, int right) {
+    public void merge(int[] arr, int left, int mid, int right) {
         int n1 = mid-left+1;
         int n2 = right-mid;
 
@@ -40,7 +40,7 @@ public class MergeSort extends SwapTrace implements ISorting {
         }
     }
 
-    void sortRecursive(int[] arr, int left, int right) {
+    public void sortRecursive(int[] arr, int left, int right) {
         if (left < right) {
             // Find the middle point
             int mid = (right-left)/2 + left;

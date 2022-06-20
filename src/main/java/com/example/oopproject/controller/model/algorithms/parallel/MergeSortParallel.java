@@ -6,7 +6,7 @@ import com.example.oopproject.controller.model.algorithms.MergeSort;
 public class MergeSortParallel extends MergeSort{
     private static final int MAX_THREADS = 8;
 
-    private static class SortThreads extends Thread{
+    private class SortThreads extends Thread{
         SortThreads(int[] array, int begin, int end){
             super(()->{
                 sortRecursive(array, begin, end);
@@ -15,7 +15,7 @@ public class MergeSortParallel extends MergeSort{
         }
     }
 
-    public static void threadedSort(int[] array){
+    public void threadedSort(int[] array){
         long time = System.currentTimeMillis();
         final int length = array.length;boolean exact = length%MAX_THREADS == 0;
         int maxlim = exact? length/MAX_THREADS: length/(MAX_THREADS-1);

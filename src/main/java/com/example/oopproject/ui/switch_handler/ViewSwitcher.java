@@ -44,14 +44,14 @@ public class ViewSwitcher {
             Parent root;
             //if we already loaded the fxml file before,
             //pick it from cache.
-            if(cache.containsKey(view)) {
-                root = cache.get(view);
-            } else {
-                root = FXMLLoader.load(
-                        Objects.requireNonNull(ViewSwitcher.class.getClassLoader().getResource(view.getFilename()))
-                );
-                cache.put(view, root);
-            }
+            //if(cache.containsKey(view)) {
+            //    root = cache.get(view);
+            // } else {
+            root = FXMLLoader.load(
+                    Objects.requireNonNull(ViewSwitcher.class.getClassLoader().getResource(view.getFilename()))
+            );
+                //cache.put(view, root);
+            //}
             scene.setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();

@@ -41,9 +41,6 @@ public class SortingsController implements Initializable {
     @FXML
     public Button btnStart;
 
-    @FXML
-    public Button btnShuffle;
-
     // Algorithm utilities----------------------------------------------------------------------------------------------
 
     private int size = 25;
@@ -106,7 +103,6 @@ public class SortingsController implements Initializable {
         sliderSize.valueProperty().addListener((observableValue, number, t1) -> {
             size = (int) sliderSize.getValue();
             btnStart.setDisable(false);
-            btnShuffle.setDisable(false);
             array = new int[size];
             visualizerPanel.getChildren().clear();
             generateArray();
@@ -216,7 +212,6 @@ public class SortingsController implements Initializable {
 
     public void onStartButton() {
         btnStart.setDisable(true);
-        btnShuffle.setDisable(true);
         sortingAlgorithm.sort(array);
 
         if (sortingAlgorithm instanceof MergeSort) {
@@ -239,7 +234,6 @@ public class SortingsController implements Initializable {
                     timer.cancel();
                     timer = new Timer();
                     sortingAlgorithm.getTrace().clear();
-                    btnShuffle.setDisable(false);
                     return;
                 }
                 Pair<Integer, Integer> currentEntry = entries.next();

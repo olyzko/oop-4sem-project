@@ -15,7 +15,7 @@
          <children>
             <Button layoutX="53.0" layoutY="28.0" mnemonicParsing="false" onAction="#onSortingsButton" text="Sorting Algs" />
             <Button layoutX="54.0" layoutY="82.0" mnemonicParsing="false" onAction="#onBinaryTreesButton" text="Binary trees" />
-            <Button layoutX="63.0" layoutY="139.0" mnemonicParsing="false" text="Test" />
+            <Button layoutX="31.0" layoutY="136.0" mnemonicParsing="false" onAction="#onConcurrentVsParallelButton" text="Concurrent vs Parallel" />
          </children>
       </AnchorPane>
    </children>

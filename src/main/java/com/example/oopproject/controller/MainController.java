@@ -12,4 +12,8 @@ public class MainController {
     public void onBinaryTreesButton() {
         ViewSwitcher.switchTo(View.BINARY_TREES);
     }
+
+    public void onConcurrentVsParallelButton() {
+        ViewSwitcher.switchTo(View.CONCURRENT_VS_PARALLEL);
+    }
 }
